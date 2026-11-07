@@ -1,0 +1,5 @@
+folder_id = "..."
+bucket_name = "..."
+domain = "..."
+cert_id = "..."
+dns_zone_id = "..."
