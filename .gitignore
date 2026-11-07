@@ -1,0 +1,14 @@
+/cloudphoto
+/cloudphoto-*
+/dist/
+
+terraform/.terraform/
+terraform/*.tfstate
+terraform/*.tfstate.*
+terraform/terraform.tfvars
+terraform/crash.log
+
+.env
+*.env
+
+.DS_Store
