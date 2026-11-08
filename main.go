@@ -1,6 +1,8 @@
 package main
 
 import (
+	"context"
+	"errors"
 	"fmt"
 	"os"
 )
@@ -20,13 +22,34 @@ func run(args []string) int {
 		fmt.Fprintln(os.Stderr, msgNoEnv)
 		return 1
 	}
-	_ = cfg
 
 	cmd, err := parseArgs(args)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, msgBadArgs)
 		return 1
 	}
-	fmt.Fprintf(os.Stderr, "Команда не реализована", cmd.Name)
+
+	ctx := context.Background()
+	st := newStorage(cfg)
+	if err := execute(ctx, st, cmd); err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		return 1
+	}
 	return 0
+}
+
+func execute(ctx context.Context, st *Storage, cmd *Command) error {
+	switch cmd.Name {
+	case "list":
+		return cmdList(ctx, st, cmd)
+	case "upload":
+		return cmdUpload(ctx, st, cmd)
+	case "download":
+		return cmdDownload(ctx, st, cmd)
+	case "delete":
+		return cmdDelete(ctx, st, cmd)
+	case "mksite":
+		return cmdMksite(ctx, st)
+	}
+	return errors.New(msgBadArgs)
 }
